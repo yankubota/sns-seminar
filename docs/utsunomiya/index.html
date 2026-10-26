@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{color-scheme:light dark}body{margin:0;font-family:system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>宇都宮SNSセミナー プロンプト集</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@500;700;900&display=swap">
+<style>
+/* Layout: 1列の読み物。各プロンプトは「使う場面 → 書き込む場所 → 本文 → コピー」の順で、スマホで上から押していけば済む構成 */
+:root{
+  --bg:#fbf8f6; --surface:#ffffff; --fg:#23222a; --muted:#6b6672;
+  --line:#e6dfe0; --accent:#c9336f; --accent-soft:#fbe6ee; --ink:#1f3a5f; --ink-soft:#e4ecf6;
+  --fill-mark:#fff3c4; --fill-mark-fg:#6b4a00;
+  --font-display:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --font-body:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",sans-serif;
+  --font-prompt:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#17161b; --surface:#211f26; --fg:#f0ecee; --muted:#a8a1ab; --line:#38343d;
+  --accent:#f06c9e; --accent-soft:#3b2230; --ink:#b9cdea; --ink-soft:#243247;
+  --fill-mark:#4a3a08; --fill-mark-fg:#ffe08a; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#17161b; --surface:#211f26; --fg:#f0ecee; --muted:#a8a1ab; --line:#38343d;
+  --accent:#f06c9e; --accent-soft:#3b2230; --ink:#b9cdea; --ink-soft:#243247;
+  --fill-mark:#4a3a08; --fill-mark-fg:#ffe08a; color-scheme:dark }
+
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.75;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 48px}
+.wrap{max-width:760px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;line-height:1.35;margin:0}
+h1{font-size:1.7rem;font-weight:900;color:var(--ink)}
+h2{font-size:1.25rem;font-weight:700}
+h3{font-size:1rem;font-weight:700}
+p{margin:0}
+a{color:var(--accent)}
+
+header{padding-block:28px 20px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:.8rem;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+.sub{color:var(--muted);margin-top:8px;font-size:.95rem}
+
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:20px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.step b{display:block;font-family:var(--font-display);color:var(--accent);font-size:.8rem;letter-spacing:.06em}
+.step span{font-size:.92rem}
+@media (max-width:520px){.steps{grid-template-columns:repeat(2,1fr)}}
+
+nav{display:flex;flex-wrap:wrap;gap:8px;padding-block:16px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+nav a{text-decoration:none;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.88rem;font-family:var(--font-display);font-weight:700}
+nav a:hover,nav a:focus-visible{border-color:var(--accent);outline:none}
+
+section.prompt{padding-block:32px;border-bottom:1px solid var(--line);scroll-margin-top:72px}
+.head{display:flex;gap:12px;align-items:flex-start}
+.num{flex:none;width:40px;height:40px;border-radius:50%;background:var(--ink);color:#fff;font-family:var(--font-display);font-weight:900;display:grid;place-items:center;font-size:1.1rem}
+.when{margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.93rem}
+.when dt{color:var(--muted);white-space:nowrap}
+.when dd{margin:0;min-width:0}
+
+.fill-note{margin-top:14px;background:var(--accent-soft);border-left:4px solid var(--accent);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.93rem}
+.fill-note mark{background:var(--fill-mark);color:var(--fill-mark-fg);padding:0 4px;border-radius:3px}
+
+.variant{display:flex;gap:6px;margin-top:16px}
+.variant button{font:inherit;font-family:var(--font-display);font-weight:700;font-size:.88rem;padding:6px 14px;border-radius:8px 8px 0 0;border:1px solid var(--line);border-bottom:none;background:var(--bg);color:var(--muted);cursor:pointer}
+.variant button[aria-selected="true"]{background:var(--surface);color:var(--fg);border-color:var(--ink)}
+.variant button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.box{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:14px}
+.variant + .box{margin-top:0;border-top-left-radius:0}
+.box pre{margin:0;padding:18px 16px 16px;font-family:var(--font-prompt);font-size:.95rem;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;max-height:none}
+.box pre mark{background:var(--fill-mark);color:var(--fill-mark-fg);padding:0 3px;border-radius:3px;font-weight:700}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--bg);border-radius:0 0 10px 10px}
+.bar small{color:var(--muted);font-size:.82rem}
+.copy{font:inherit;font-family:var(--font-display);font-weight:700;font-size:.95rem;background:var(--accent);color:#fff;border:none;border-radius:8px;padding:10px 18px;cursor:pointer;min-width:150px}
+.copy:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.copy.done{background:var(--ink)}
+.tips{margin-top:14px;font-size:.9rem;color:var(--muted)}
+.tips li{margin-left:1.2em}
+
+.notice{margin-top:32px;background:var(--ink-soft);border-radius:12px;padding:18px 20px}
+.notice h2{color:var(--ink);font-size:1.05rem}
+.notice ul{margin:8px 0 0;padding-left:1.3em;font-size:.93rem}
+footer{margin-top:28px;color:var(--muted);font-size:.85rem;line-height:1.7}
+@media (prefers-reduced-motion:no-preference){.copy{transition:background .2s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="eyebrow">宇都宮商工会議所 × ウェブ解析士協会　SNSマーケティング戦略＆実践講座</p>
+  <h1>Google Geminiを使った<br>SNS運用計画ワークショップ プロンプト集</h1>
+  <p class="sub">2026年10月27日（火）14:00〜16:00　講師：久保田 善博（株式会社Banso／チーフSNSマネージャー）</p>
+  <div class="steps">
+    <div class="step"><b>STEP 1</b><span>このページで「コピー」を押す</span></div>
+    <div class="step"><b>STEP 2</b><span>Geminiの入力欄に貼り付ける</span></div>
+    <div class="step"><b>STEP 3</b><span>黄色の【ここに記入】を自社の情報に書き換える</span></div>
+    <div class="step"><b>STEP 4</b><span>送信する。空欄があればAIが質問します</span></div>
+  </div>
+</header>
+
+<nav aria-label="プロンプト一覧">
+  <a href="#p0">⓪ 操作体験</a>
+  <a href="#p1">① 運用方針</a>
+  <a href="#p2">② X投稿10案</a>
+  <a href="#p3">③ 投稿改善</a>
+  <a href="#p4">④ 実績振り返り</a>
+  <a href="worksheet.html">ワークシート</a>
+</nav>
+
+<!-- ⓪ -->
+<section class="prompt" id="p0">
+  <div class="head"><div class="num">⓪</div><div><h2>操作体験：Xプロフィール文を3案作る</h2>
+  <dl class="when"><dt>使う場面</dt><dd>14:25頃。コピー → 貼り付け → 送信の練習と、Geminiが動くかの確認</dd><dt>書き換え</dt><dd>不要。そのまま送信してください</dd></dl></div></div>
+  <div class="box"><pre id="t0">あなたはSNSマーケティングの専門家です。
+宇都宮市で営業する個人経営のカフェの、X（旧Twitter）のプロフィール文を3案作ってください。
+
+【背景】
+・店主1人と、アルバイト2人の小さな店
+・自家焙煎のコーヒーと、栃木県産のいちごを使ったスイーツが看板商品
+・近所に住む30〜50代の方に「どんな店か」「何が自慢か」が10秒で伝わる文章にしたい
+
+【制約】
+・各案は120文字以内
+・絵文字は1つまで
+・専門用語を使わない
+・3案は切り口を変える（親しみやすさ／こだわり／お得な情報）
+
+【出力形式】
+案1〜案3を番号付きで。各案の下に「ねらい」を1行添えてください。</pre>
+  <div class="bar"><small>役割・背景・制約・出力形式の4つがそろった「指示の型」です</small><button class="copy" data-for="t0">コピー</button></div></div>
+</section>
+
+<!-- ① -->
+<section class="prompt" id="p1">
+  <div class="head"><div class="num">①</div><div><h2>SNS運用方針プロンプト</h2>
+  <dl class="when"><dt>使う場面</dt><dd>演習1（15:00〜）。新しいチャットを開いて、最初に貼り付けます</dd><dt>書き換え</dt><dd>冒頭の【記入欄】8項目。ワークシート1に書いた内容を写します</dd><dt>出力</dt><dd>「SNS運用方針」シートと同じ項目順の表。そのままシートに転記できます</dd></dl></div></div>
+  <p class="fill-note">書き換えるのは<mark>【ここに記入】</mark>の部分だけです。分からない項目は空欄のままで構いません。AIが最大3つ質問してから作ります。</p>
+  <div class="box"><pre id="t1">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
+以下の【記入欄】の情報をもとに、「SNS運用方針」シートを埋めるための内容を作ってください。1日30分で続けられる運用を前提にします。
+
+【記入欄】（分かる範囲で書いてください。空欄があれば質問してください）
+・屋号・ブランド名：<mark>【ここに記入】</mark>
+・業種：<mark>【ここに記入】</mark>
+・主な商品・サービス：<mark>【ここに記入】</mark>
+・SNSで実現したいこと（来店／予約／採用／ネット販売など）：<mark>【ここに記入】</mark>
+・来てほしいお客様（年代・住まい・興味など）：<mark>【ここに記入】</mark>
+・自社の強み（他店との違い）：<mark>【ここに記入】</mark>
+・今使っているSNS、または使えそうなSNS：<mark>【ここに記入】</mark>
+・1日にSNSに使える時間：<mark>【ここに記入】</mark>分
+
+【進め方】
+1. 記入欄に空欄があれば、最大3つまで質問してください。回答がなければ合理的に仮定し、冒頭に「仮定一覧」として示してください。
+2. 質問が不要なら、すぐに作ってください。
+
+【出力形式】次の順番と項目名を変えずに、「項目／内容」の2列の表で出力してください。内容は各項目1〜3行に収めます。
+
+■ SNS運用方針
+1. 運用目的とKPI
+　目的／KPI／達成期間
+2. メインターゲット（来てほしいお客様1人を具体的に）
+　名前（仮名）／年代・性別／家族構成／職業／居住地／興味・関心
+3. 利用メディア
+　SNS名（主軸1つ＋補完1つ。X、Instagram、LINE公式アカウント、Facebook、TikTok、YouTube、Googleビジネスプロフィールから、理由付きで）
+　ベンチマークアカウント（参考にする同業アカウントの探し方。実在を確認できないアカウント名は書かない）
+4. キャラクター設定（投稿する「中の人」の人物像。架空でよい）
+　名前／性別／生年月日／家族構成／出身／趣味・嗜好／口調
+5. 投稿方針
+　投稿頻度（1日に使える時間で続けられる回数と時間帯）
+　投稿内容（投稿の柱3〜5本と、それぞれのテーマ例）
+　リプライへの反応／他アカウントへの反応／ハッシュタグの活用／フォロー方針
+　目標達成に向けたKPI（到達＝インプレッション、交流＝エンゲージメント、フォロワーの3つで月間目標）
+　対象外アカウント（フォローや反応をしない相手）
+
+■ コンテンツ案
+No.1〜6のタイトルを表で（投稿の柱からバランスよく）
+
+■ ハッシュタグ候補
+10個（#宇都宮 などの地域タグを2つ以上含める）
+
+【制約】
+・日本語で、専門用語には短い説明を添える
+・KPIは「まず3か月で達成できる」控えめな数字にする
+・ツールの料金や仕様は「要公式確認」と注記する
+・お客様の個人情報、実在の個人の情報は扱わない</pre>
+  <div class="bar"><small>出力の表を、ワークシート2「SNS運用方針」またはExcelのD列に転記します</small><button class="copy" data-for="t1">コピー</button></div></div>
+  <ul class="tips">
+    <li>出力が途中で止まったら「続けて」と送ってください。</li>
+    <li>表が崩れたら「表の部分だけ、もう一度作り直して」と送ってください。</li>
+    <li>直したい項目があれば「投稿頻度を週2回にして作り直して」のように、項目名を指定して頼んでください。</li>
+  </ul>
+</section>
+
+<!-- ② -->
+<section class="prompt" id="p2">
+  <div class="head"><div class="num">②</div><div><h2>X投稿10案プロンプト</h2>
+  <dl class="when"><dt>使う場面</dt><dd>演習2（15:25〜）。①と同じチャットで続けます</dd><dt>書き換え</dt><dd>【記入欄】3項目（季節・宣伝したいもの・避けたい表現）</dd></dl></div></div>
+  <p class="fill-note">①と同じチャットで続けると、AIが運用方針を覚えているので「同じチャット版」で済みます。新しいチャットで使うときは「単独版」をお使いください。</p>
+  <div class="variant" role="tablist" aria-label="②のバージョン">
+    <button role="tab" aria-selected="true" aria-controls="t2a" id="tab2a">同じチャット版</button>
+    <button role="tab" aria-selected="false" aria-controls="t2b" id="tab2b">単独版（新しいチャット用）</button>
+  </div>
+  <div class="box" role="tabpanel" aria-labelledby="tab2a"><pre id="t2a">上で作ったSNS運用方針（ターゲット、キャラクター設定、投稿方針、コンテンツ案）をもとに、X（旧Twitter）の投稿文を10本作ってください。口調はキャラクター設定に合わせてください。
+
+【記入欄】
+・今の季節・直近のイベント（例：秋、11月の祭り、年末年始）：<mark>【ここに記入】</mark>
+・特に宣伝したい商品やお知らせ：<mark>【ここに記入】</mark>
+・避けたい表現や話題（なければ「なし」）：<mark>【ここに記入】</mark>
+
+【ルール】
+・本文は70〜140文字。冒頭にお客様にとってのメリット、末尾に呼びかけ（CTA）を1つ
+・絵文字は0〜2個
+・ハッシュタグは3〜5個。#宇都宮 など地域のタグを必ず1つ含める
+・URLは入れず「プロフィールから」などで誘導する
+・10本は投稿の柱をバランスよく使い、同じ表現を繰り返さない
+・誇大な表現や根拠のない実績は書かない
+
+【出力形式】
+表で。列は「No／投稿の柱／本文／ハッシュタグ／おすすめの投稿日時／ねらい」
+最後に、10本をどの順番で投稿するとよいか、1週間分の予定を提案してください。</pre>
+  <div class="bar"><small>10本の中から2〜3本選び、「X投稿アイデアシート」に書き写します</small><button class="copy" data-for="t2a">コピー</button></div></div>
+  <div class="box" role="tabpanel" aria-labelledby="tab2b" hidden><pre id="t2b">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
+以下の【記入欄】の情報をもとに、X（旧Twitter）の投稿文を10本作ってください。
+
+【記入欄】
+・業種：<mark>【ここに記入】</mark>
+・主な商品・サービス：<mark>【ここに記入】</mark>
+・来てほしいお客様：<mark>【ここに記入】</mark>
+・自社の強み：<mark>【ここに記入】</mark>
+・投稿の柱（例：新商品／お店の日常／お客様の声／地域の話題）：<mark>【ここに記入】</mark>
+・今の季節・直近のイベント：<mark>【ここに記入】</mark>
+・特に宣伝したい商品やお知らせ：<mark>【ここに記入】</mark>
+・避けたい表現や話題（なければ「なし」）：<mark>【ここに記入】</mark>
+
+【進め方】
+記入欄に空欄があれば最大3つまで質問し、回答がなければ合理的に仮定して「仮定一覧」を冒頭に示してください。
+
+【ルール】
+・本文は70〜140文字。冒頭にお客様にとってのメリット、末尾に呼びかけ（CTA）を1つ
+・絵文字は0〜2個
+・ハッシュタグは3〜5個。#宇都宮 など地域のタグを必ず1つ含める
+・URLは入れず「プロフィールから」などで誘導する
+・10本は投稿の柱をバランスよく使い、同じ表現を繰り返さない
+・誇大な表現や根拠のない実績は書かない
+
+【出力形式】
+表で。列は「No／投稿の柱／本文／ハッシュタグ／おすすめの投稿日時／ねらい」
+最後に、10本をどの順番で投稿するとよいか、1週間分の予定を提案してください。</pre>
+  <div class="bar"><small>セミナー後、会社で使うときはこちら</small><button class="copy" data-for="t2b">コピー</button></div></div>
+</section>
+
+<!-- ③ -->
+<section class="prompt" id="p3">
+  <div class="head"><div class="num">③</div><div><h2>投稿改善プロンプト</h2>
+  <dl class="when"><dt>使う場面</dt><dd>演習3（15:35頃〜）。②と同じチャットで続けます</dd><dt>書き換え</dt><dd>改善したい投稿の番号（同じチャット版）、または投稿文そのもの（単独版）</dd></dl></div></div>
+  <div class="variant" role="tablist" aria-label="③のバージョン">
+    <button role="tab" aria-selected="true" aria-controls="t3a" id="tab3a">同じチャット版</button>
+    <button role="tab" aria-selected="false" aria-controls="t3b" id="tab3b">単独版（投稿文を貼る）</button>
+  </div>
+  <div class="box" role="tabpanel" aria-labelledby="tab3a"><pre id="t3a">上の10本のうち、No.<mark>【ここに記入】</mark>の投稿を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。
+
+【改善の観点】
+1. 冒頭の一文で「読む理由」が伝わっているか
+2. 情景や五感が浮かぶ表現、驚きがあるか
+3. 質問や呼びかけ（CTA）が1つ入っているか
+4. 絵文字の使い方は効果的か（0〜2個）
+5. 宇都宮らしさ・地域性が入っているか
+
+【出力形式】
+・「改善前」と「改善後」を上下に並べる
+・改善後は140文字以内、ハッシュタグは3〜5個
+・観点ごとに「どこを、なぜ変えたか」を1行で説明する
+・さらに、別の切り口の改善案を1つ追加する</pre>
+  <div class="bar"><small>改善前と改善後を「投稿改善比較シート」に書き写します</small><button class="copy" data-for="t3a">コピー</button></div></div>
+  <div class="box" role="tabpanel" aria-labelledby="tab3b" hidden><pre id="t3b">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
+次のX（旧Twitter）の投稿文を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。
+
+【改善したい投稿文】
+<mark>【ここに投稿文を貼り付け】</mark>
+
+【お店の情報】
+・業種：<mark>【ここに記入】</mark>
+・来てほしいお客様：<mark>【ここに記入】</mark>
+・この投稿で促したい行動（来店／予約／問い合わせなど）：<mark>【ここに記入】</mark>
+
+【改善の観点】
+1. 冒頭の一文で「読む理由」が伝わっているか
+2. 情景や五感が浮かぶ表現、驚きがあるか
+3. 質問や呼びかけ（CTA）が1つ入っているか
+4. 絵文字の使い方は効果的か（0〜2個）
+5. 宇都宮らしさ・地域性が入っているか
+
+【出力形式】
+・「改善前」と「改善後」を上下に並べる
+・改善後は140文字以内、ハッシュタグは3〜5個
+・観点ごとに「どこを、なぜ変えたか」を1行で説明する
+・さらに、別の切り口の改善案を1つ追加する</pre>
+  <div class="bar"><small>過去の投稿を見直すときにも使えます</small><button class="copy" data-for="t3b">コピー</button></div></div>
+</section>
+
+<!-- ④ -->
+<section class="prompt" id="p4">
+  <div class="head"><div class="num">④</div><div><h2>実績振り返りプロンプト（運用1か月後に）</h2>
+  <dl class="when"><dt>使う場面</dt><dd>セミナーでは使いません。1か月運用したあと、月1回の振り返りに</dd><dt>書き換え</dt><dd>【記入欄】4項目と、実績データの貼り付け（Xの「アナリティクス」の数字や画面の写真）</dd></dl></div></div>
+  <p class="fill-note">数字をそろえるのが大変なときは、Xのアナリティクス画面のスクリーンショットを添付して「この画像から読み取って」と添えるだけでも動きます。</p>
+  <div class="box"><pre id="t4">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
+以下の投稿実績をもとに、来月の改善点を優先順位付きで提案してください。
+
+【記入欄】
+・SNSの種類：<mark>【ここに記入】</mark>
+・集計期間（例：2026年11月1日〜30日）：<mark>【ここに記入】</mark>
+・SNSの目的（例：来店促進）：<mark>【ここに記入】</mark>
+・今月の投稿本数：<mark>【ここに記入】</mark>本
+
+【実績データ】（下に貼り付けるか、画面の写真を添付してください）
+<mark>【ここに貼り付け】</mark>
+例：投稿日／本文の冒頭／インプレッション／いいね／保存／返信／プロフィール閲覧
+
+【評価のしかた】
+・到達（インプレッション）、交流（いいね・保存・返信・リポスト）、行動（プロフィール閲覧・リンククリック・来店）の3段階で見る
+・反応が良かった投稿と伸びなかった投稿を3本ずつ挙げ、共通点を説明する
+・データが少ない場合や極端な値がある場合は、その旨を注記する
+・画像から読み取った数字には、確からしさ（高／中／低）を添える
+
+【出力形式】
+1. 今月のまとめ（3行）
+2. 良かった投稿・伸びなかった投稿（表）
+3. 来月の改善アクション（優先度 高・中・低で3〜5個）
+4. 投稿の柱の見直し案
+5. 来月のKPI目標（到達・交流・行動）</pre>
+  <div class="bar"><small>11/24のInstagram編でも、この振り返りの考え方を使います</small><button class="copy" data-for="t4">コピー</button></div></div>
+</section>
+
+<div class="notice">
+  <h2>Geminiに入力してはいけない情報</h2>
+  <ul>
+    <li>お客様の氏名・住所・電話番号・メールアドレスなどの個人情報</li>
+    <li>未公開の売上や取引先の情報、社内だけの資料</li>
+    <li>パスワードや口座番号</li>
+  </ul>
+  <p style="margin-top:8px;font-size:.9rem">入力した内容はGoogleの学習に使われる場合があります。業種や商品の特徴など、公開して困らない情報だけを使ってください。</p>
+</div>
+
+<footer>
+  <p>このプロンプト集は、本日の受講者の方が自社のSNS運用のために自由にお使いいただけます。ChatGPTなど他の生成AIにも、そのまま貼り付けて使えます。</p>
+  <p>ワークシートは <a href="worksheet.html">こちら</a>。作成：株式会社Banso 久保田 善博</p>
+</footer>
+</div>
+
+<script>
+(function(){
+  // コピー：mark要素を含めたテキストをそのまま取得。失敗時は範囲選択にフォールバック
+  document.querySelectorAll('.copy').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var pre = document.getElementById(btn.dataset.for);
+      var text = pre.textContent;
+      var done = function(){ btn.textContent='コピーしました'; btn.classList.add('done');
+        setTimeout(function(){ btn.textContent='コピー'; btn.classList.remove('done'); }, 2000); };
+      var fallback = function(){
+        try{ var r=document.createRange(); r.selectNodeContents(pre); var s=window.getSelection(); s.removeAllRanges(); s.addRange(r);
+          var ok=document.execCommand && document.execCommand('copy'); if(ok){done();} else {btn.textContent='文字を選択しました。長押しでコピー';}
+        }catch(e){ btn.textContent='長押しでコピーしてください'; }
+      };
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(done, fallback);
+      } else { fallback(); }
+    });
+  });
+  // 同じチャット版／単独版の切り替え
+  document.querySelectorAll('[role=tablist]').forEach(function(list){
+    var tabs = list.querySelectorAll('[role=tab]');
+    tabs.forEach(function(tab){
+      tab.addEventListener('click', function(){
+        tabs.forEach(function(t){ t.setAttribute('aria-selected', t===tab ? 'true':'false');
+          var panel = document.getElementById(t.getAttribute('aria-controls')).closest('.box');
+          panel.hidden = (t!==tab); });
+      });
+    });
+  });
+})();
+</script>
+</body>
+</html>
