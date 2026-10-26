@@ -67,6 +67,15 @@ section.prompt{padding-block:32px;border-bottom:1px solid var(--line);scroll-mar
 
 .box{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;margin-top:14px}
 .variant + .box{margin-top:0;border-top-left-radius:0}
+.variant{flex-wrap:wrap}
+/* ②のSNS切り替え（X／Instagram）。選択中は濃色で塗り、どちらを選んだか一目で分かるようにする */
+.sns-switch{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
+.sns-switch button{font:inherit;font-family:var(--font-display);font-weight:900;font-size:1.05rem;padding:12px 10px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--fg);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.sns-switch button small{font-weight:500;font-size:.78rem;color:var(--muted)}
+.sns-switch button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.sns-switch button[aria-selected="true"] small{color:var(--bg);opacity:.85}
+.sns-switch button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sns-panel{margin-top:4px}
 .box pre{margin:0;padding:18px 16px 16px;font-family:var(--font-prompt);font-size:.95rem;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;max-height:none}
 .box pre mark{background:var(--fill-mark);color:var(--fill-mark-fg);padding:0 3px;border-radius:3px;font-weight:700}
 .bar{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--bg);border-radius:0 0 10px 10px}
@@ -101,7 +110,7 @@ footer{margin-top:28px;color:var(--muted);font-size:.85rem;line-height:1.7}
 <nav aria-label="プロンプト一覧">
   <a href="#p0">⓪ 操作体験</a>
   <a href="#p1">① 運用方針</a>
-  <a href="#p2">② X投稿10案</a>
+  <a href="#p2">② 投稿案（X／Instagram）</a>
   <a href="#p3">③ 投稿改善</a>
   <a href="#p4">④ 実績振り返り</a>
   <a href="worksheet.html">ワークシート</a>
@@ -192,10 +201,16 @@ No.1〜6のタイトルを表で（投稿の柱からバランスよく）
 
 <!-- ② -->
 <section class="prompt" id="p2">
-  <div class="head"><div class="num">②</div><div><h2>X投稿10案プロンプト</h2>
-  <dl class="when"><dt>使う場面</dt><dd>演習2。①と同じチャットで続けます</dd><dt>書き換え</dt><dd>【記入欄】3項目（季節・宣伝したいもの・避けたい表現）</dd></dl></div></div>
-  <p class="fill-note">①と同じチャットで続けると、AIが運用方針を覚えているので「同じチャット版」で済みます。新しいチャットで使うときは「単独版」をお使いください。</p>
-  <div class="variant" role="tablist" aria-label="②のバージョン">
+  <div class="head"><div class="num">②</div><div><h2>投稿案プロンプト（X版／Instagram版）</h2>
+  <dl class="when"><dt>使う場面</dt><dd>演習2。①と同じチャットで続けます</dd><dt>選び方</dt><dd>演習1の運用方針で「主軸」になったSNSのボタンを押してください</dd><dt>書き換え</dt><dd>【記入欄】3項目（季節・宣伝したいもの・避けたい表現）</dd></dl></div></div>
+  <div class="sns-switch" role="tablist" aria-label="主軸のSNSを選ぶ">
+    <button role="tab" aria-selected="true" aria-controls="p2x" id="tab2x">X版<small>投稿文10案</small></button>
+    <button role="tab" aria-selected="false" aria-controls="p2ig" id="tab2ig">Instagram版<small>投稿6案＋写真の撮影案</small></button>
+  </div>
+  <p class="fill-note">①と同じチャットで続けると、AIが運用方針を覚えているので「同じチャット版」で済みます。新しいチャットで使うときは「単独版」をお使いください。主軸がLINE公式やGoogleビジネスプロフィールになった方は、Instagram版で作り、文章を短くして使ってください。</p>
+
+  <div class="sns-panel" id="p2x">
+  <div class="variant" role="tablist" aria-label="②X版のバージョン">
     <button role="tab" aria-selected="true" aria-controls="t2a" id="tab2a">同じチャット版</button>
     <button role="tab" aria-selected="false" aria-controls="t2b" id="tab2b">単独版（新しいチャット用）</button>
   </div>
@@ -217,7 +232,7 @@ No.1〜6のタイトルを表で（投稿の柱からバランスよく）
 【出力形式】
 表で。列は「No／投稿の柱／本文／ハッシュタグ／おすすめの投稿日時／ねらい」
 最後に、10本をどの順番で投稿するとよいか、1週間分の予定を提案してください。</pre>
-  <div class="bar"><small>10本の中から2〜3本選び、「X投稿アイデアシート」に書き写します</small><button class="copy" data-for="t2a">コピー</button></div></div>
+  <div class="bar"><small>10本の中から2〜3本選び、ワークシート3「投稿アイデアシート」に書き写します</small><button class="copy" data-for="t2a">コピー</button></div></div>
   <div class="box" role="tabpanel" aria-labelledby="tab2b" hidden><pre id="t2b">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
 以下の【記入欄】の情報をもとに、X（旧Twitter）の投稿文を10本作ってください。
 
@@ -246,52 +261,122 @@ No.1〜6のタイトルを表で（投稿の柱からバランスよく）
 表で。列は「No／投稿の柱／本文／ハッシュタグ／おすすめの投稿日時／ねらい」
 最後に、10本をどの順番で投稿するとよいか、1週間分の予定を提案してください。</pre>
   <div class="bar"><small>セミナー後、会社で使うときはこちら</small><button class="copy" data-for="t2b">コピー</button></div></div>
+  </div>
+
+  <div class="sns-panel" id="p2ig" hidden>
+  <div class="variant" role="tablist" aria-label="②Instagram版のバージョン">
+    <button role="tab" aria-selected="true" aria-controls="t2c" id="tab2c">同じチャット版</button>
+    <button role="tab" aria-selected="false" aria-controls="t2d" id="tab2d">単独版（新しいチャット用）</button>
+  </div>
+  <div class="box" role="tabpanel" aria-labelledby="tab2c"><pre id="t2c">上で作ったSNS運用方針（ターゲット、キャラクター設定、投稿方針、コンテンツ案）をもとに、Instagramのフィード投稿を6本作ってください。口調はキャラクター設定に合わせてください。
+
+【記入欄】
+・今の季節・直近のイベント（例：秋、11月の祭り、年末年始）：<mark>【ここに記入】</mark>
+・特に宣伝したい商品やお知らせ：<mark>【ここに記入】</mark>
+・避けたい表現や話題（なければ「なし」）：<mark>【ここに記入】</mark>
+
+【ルール】
+・キャプション（本文）は150〜300文字。1行目は、写真を見た人が続きを読みたくなる一文にする
+・適度に改行して、スマホで読みやすくする
+・6本のうち2本以上は「保存したくなる情報」（選び方、使い方、豆知識など）にする
+・最後に呼びかけ（CTA）を1つ。キャプションのURLは押せないため「プロフィールのリンクから」と誘導する
+・ハッシュタグは5〜10個。#宇都宮 など地域のタグを2つ以上、業種・商品のタグも入れる
+・絵文字は0〜3個
+・写真は、スマホで撮れる内容にする。人物が写る場合は「本人の許可を取る」と注記する
+・6本は投稿の柱をバランスよく使い、同じ表現を繰り返さない
+・誇大な表現や根拠のない実績は書かない
+
+【出力形式】
+1本ずつ、次の順で出力してください。
+No.／投稿の柱／1枚目の写真の撮影案（何を、どう撮るか）／キャプション／ハッシュタグ／おすすめの投稿曜日と時間帯
+最後に、6本の一覧表（No／投稿の柱／撮影案の要約）と、2週間分の投稿予定（週3回まで）を出してください。</pre>
+  <div class="bar"><small>6本の中から2〜3本選び、ワークシート3「投稿アイデアシート」に書き写します</small><button class="copy" data-for="t2c">コピー</button></div></div>
+  <div class="box" role="tabpanel" aria-labelledby="tab2d" hidden><pre id="t2d">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
+以下の【記入欄】の情報をもとに、Instagramのフィード投稿を6本作ってください。
+
+【記入欄】
+・業種：<mark>【ここに記入】</mark>
+・主な商品・サービス：<mark>【ここに記入】</mark>
+・来てほしいお客様：<mark>【ここに記入】</mark>
+・自社の強み：<mark>【ここに記入】</mark>
+・投稿の柱（例：商品／お店の日常／お役立ち情報／地域の話題）：<mark>【ここに記入】</mark>
+・投稿する人の口調（例：丁寧で親しみやすい）：<mark>【ここに記入】</mark>
+・今の季節・直近のイベント：<mark>【ここに記入】</mark>
+・特に宣伝したい商品やお知らせ：<mark>【ここに記入】</mark>
+・避けたい表現や話題（なければ「なし」）：<mark>【ここに記入】</mark>
+
+【進め方】
+記入欄に空欄があれば最大3つまで質問し、回答がなければ合理的に仮定して「仮定一覧」を冒頭に示してください。
+
+【ルール】
+・キャプション（本文）は150〜300文字。1行目は、写真を見た人が続きを読みたくなる一文にする
+・適度に改行して、スマホで読みやすくする
+・6本のうち2本以上は「保存したくなる情報」（選び方、使い方、豆知識など）にする
+・最後に呼びかけ（CTA）を1つ。キャプションのURLは押せないため「プロフィールのリンクから」と誘導する
+・ハッシュタグは5〜10個。#宇都宮 など地域のタグを2つ以上、業種・商品のタグも入れる
+・絵文字は0〜3個
+・写真は、スマホで撮れる内容にする。人物が写る場合は「本人の許可を取る」と注記する
+・6本は投稿の柱をバランスよく使い、同じ表現を繰り返さない
+・誇大な表現や根拠のない実績は書かない
+
+【出力形式】
+1本ずつ、次の順で出力してください。
+No.／投稿の柱／1枚目の写真の撮影案（何を、どう撮るか）／キャプション／ハッシュタグ／おすすめの投稿曜日と時間帯
+最後に、6本の一覧表（No／投稿の柱／撮影案の要約）と、2週間分の投稿予定（週3回まで）を出してください。</pre>
+  <div class="bar"><small>セミナー後、会社で使うときはこちら</small><button class="copy" data-for="t2d">コピー</button></div></div>
+  </div>
 </section>
 
 <!-- ③ -->
 <section class="prompt" id="p3">
   <div class="head"><div class="num">③</div><div><h2>投稿改善プロンプト</h2>
-  <dl class="when"><dt>使う場面</dt><dd>演習3。②と同じチャットで続けます</dd><dt>書き換え</dt><dd>改善したい投稿の番号（同じチャット版）、または投稿文そのもの（単独版）</dd></dl></div></div>
+  <dl class="when"><dt>使う場面</dt><dd>演習3。②と同じチャットで続けます</dd><dt>書き換え</dt><dd>改善したい投稿の番号（同じチャット版）、または投稿文そのもの（単独版）。X版・Instagram版のどちらで作った投稿にも使えます</dd></dl></div></div>
   <div class="variant" role="tablist" aria-label="③のバージョン">
     <button role="tab" aria-selected="true" aria-controls="t3a" id="tab3a">同じチャット版</button>
     <button role="tab" aria-selected="false" aria-controls="t3b" id="tab3b">単独版（投稿文を貼る）</button>
   </div>
-  <div class="box" role="tabpanel" aria-labelledby="tab3a"><pre id="t3a">上の10本のうち、No.<mark>【ここに記入】</mark>の投稿を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。
+  <div class="box" role="tabpanel" aria-labelledby="tab3a"><pre id="t3a">上の投稿案のうち、No.<mark>【ここに記入】</mark>の投稿を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。投稿するSNSは、上の投稿案と同じです。
 
 【改善の観点】
-1. 冒頭の一文で「読む理由」が伝わっているか
+1. 冒頭の一文で「読む理由」が伝わっているか（Instagramは1行目で続きを読みたくなるか）
 2. 情景や五感が浮かぶ表現、驚きがあるか
 3. 質問や呼びかけ（CTA）が1つ入っているか
-4. 絵文字の使い方は効果的か（0〜2個）
+4. 絵文字の使い方は効果的か（Xは0〜2個、Instagramは0〜3個）
 5. 宇都宮らしさ・地域性が入っているか
+6. Instagramの場合：1枚目の写真の撮影案は、目に留まる内容か
 
 【出力形式】
 ・「改善前」と「改善後」を上下に並べる
-・改善後は140文字以内、ハッシュタグは3〜5個
+・改善後の長さとハッシュタグ：Xは140文字以内・3〜5個、Instagramは300文字以内・5〜10個
 ・観点ごとに「どこを、なぜ変えたか」を1行で説明する
 ・さらに、別の切り口の改善案を1つ追加する</pre>
   <div class="bar"><small>改善前と改善後を「投稿改善比較シート」に書き写します</small><button class="copy" data-for="t3a">コピー</button></div></div>
   <div class="box" role="tabpanel" aria-labelledby="tab3b" hidden><pre id="t3b">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
-次のX（旧Twitter）の投稿文を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。
+次のSNS投稿を、より多くの反応（いいね・保存・返信・来店）が得られるように改善してください。
+
+【投稿するSNS】（XかInstagramのどちらか）：<mark>【ここに記入】</mark>
 
 【改善したい投稿文】
 <mark>【ここに投稿文を貼り付け】</mark>
 
+【写真の内容】（Instagramの場合。なければ空欄）：<mark>【ここに記入】</mark>
+
 【お店の情報】
 ・業種：<mark>【ここに記入】</mark>
 ・来てほしいお客様：<mark>【ここに記入】</mark>
-・この投稿で促したい行動（来店／予約／問い合わせなど）：<mark>【ここに記入】</mark>
+・この投稿で促したい行動（来店／予約／問い合わせ／応募など）：<mark>【ここに記入】</mark>
 
 【改善の観点】
-1. 冒頭の一文で「読む理由」が伝わっているか
+1. 冒頭の一文で「読む理由」が伝わっているか（Instagramは1行目で続きを読みたくなるか）
 2. 情景や五感が浮かぶ表現、驚きがあるか
 3. 質問や呼びかけ（CTA）が1つ入っているか
-4. 絵文字の使い方は効果的か（0〜2個）
+4. 絵文字の使い方は効果的か（Xは0〜2個、Instagramは0〜3個）
 5. 宇都宮らしさ・地域性が入っているか
+6. Instagramの場合：1枚目の写真の撮影案は、目に留まる内容か
 
 【出力形式】
 ・「改善前」と「改善後」を上下に並べる
-・改善後は140文字以内、ハッシュタグは3〜5個
+・改善後の長さとハッシュタグ：Xは140文字以内・3〜5個、Instagramは300文字以内・5〜10個
 ・観点ごとに「どこを、なぜ変えたか」を1行で説明する
 ・さらに、別の切り口の改善案を1つ追加する</pre>
   <div class="bar"><small>過去の投稿を見直すときにも使えます</small><button class="copy" data-for="t3b">コピー</button></div></div>
@@ -300,8 +385,8 @@ No.1〜6のタイトルを表で（投稿の柱からバランスよく）
 <!-- ④ -->
 <section class="prompt" id="p4">
   <div class="head"><div class="num">④</div><div><h2>実績振り返りプロンプト（運用1か月後に）</h2>
-  <dl class="when"><dt>使う場面</dt><dd>セミナーでは使いません。1か月運用したあと、月1回の振り返りに</dd><dt>書き換え</dt><dd>【記入欄】4項目と、実績データの貼り付け（Xの「アナリティクス」の数字や画面の写真）</dd></dl></div></div>
-  <p class="fill-note">数字をそろえるのが大変なときは、Xのアナリティクス画面のスクリーンショットを添付して「この画像から読み取って」と添えるだけでも動きます。</p>
+  <dl class="when"><dt>使う場面</dt><dd>セミナーでは使いません。1か月運用したあと、月1回の振り返りに</dd><dt>書き換え</dt><dd>【記入欄】4項目と、実績データの貼り付け（Xの「アナリティクス」やInstagramの「インサイト」の数字、または画面の写真）</dd></dl></div></div>
+  <p class="fill-note">数字をそろえるのが大変なときは、Xのアナリティクス画面やInstagramのインサイト画面のスクリーンショットを添付して「この画像から読み取って」と添えるだけでも動きます。</p>
   <div class="box"><pre id="t4">あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。
 以下の投稿実績をもとに、来月の改善点を優先順位付きで提案してください。
 
@@ -365,14 +450,19 @@ No.1〜6のタイトルを表で（投稿の柱からバランスよく）
       } else { fallback(); }
     });
   });
-  // 同じチャット版／単独版の切り替え
+  // タブの切り替え（X／Instagram、同じチャット版／単独版）
+  // aria-controls がプロンプト本文(pre)なら外枠の .box を、SNSパネル(div)ならそれ自体を表示・非表示にする
   document.querySelectorAll('[role=tablist]').forEach(function(list){
     var tabs = list.querySelectorAll('[role=tab]');
     tabs.forEach(function(tab){
       tab.addEventListener('click', function(){
-        tabs.forEach(function(t){ t.setAttribute('aria-selected', t===tab ? 'true':'false');
-          var panel = document.getElementById(t.getAttribute('aria-controls')).closest('.box');
-          panel.hidden = (t!==tab); });
+        tabs.forEach(function(t){
+          t.setAttribute('aria-selected', t===tab ? 'true':'false');
+          var el = document.getElementById(t.getAttribute('aria-controls'));
+          if(!el){ return; } // 対象が見つからない場合は何もしない
+          var panel = el.closest('.box') || el;
+          panel.hidden = (t!==tab);
+        });
       });
     });
   });
