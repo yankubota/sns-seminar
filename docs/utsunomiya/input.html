@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SNS運用計画ワークシート（記入版）</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=BIZ+UDPGothic:wght@400;700&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap">
+<style>
+/* 画面で直接記入できるワークシート。入力内容はこの端末のブラウザ内だけに保存し、どこにも送信しない */
+:root{--bg:#f6f5f8;--card:#ffffff;--fg:#23222a;--muted:#6b6672;--line:#cfcad0;--ink:#1f3a5f;--accent:#c9336f;--accent-soft:#fbe6ee;--ok:#1f7a4d;color-scheme:light}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg)}
+body{font-family:"BIZ UDPGothic","Hiragino Sans","Yu Gothic",sans-serif;font-size:15px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-bottom:48px}
+h1,h2,h3{font-family:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;margin:0;line-height:1.35}
+.wrap{max-width:820px;margin:0 auto}
+header.page{padding:18px 0 6px}
+.eyebrow{font-size:12px;color:var(--muted)}
+header.page h1{font-size:22px;color:var(--ink);margin-top:4px}
+.privacy{margin:10px 0 0;background:#eef6f1;border-left:4px solid var(--ok);padding:8px 12px;font-size:13px}
+.back{font-size:13px;margin-top:8px}
+.back a{color:var(--accent)}
+/* 上部固定の目次と保存状態 */
+nav.bar{position:sticky;top:0;z-index:5;background:rgba(246,245,248,.96);backdrop-filter:blur(4px);border-bottom:1px solid var(--line);margin:12px calc(-1 * max(16px,env(safe-area-inset-left,0px))) 0;padding:8px max(16px,env(safe-area-inset-left,0px))}
+nav.bar .in{max-width:820px;margin:0 auto;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+nav.bar a{font-size:13px;text-decoration:none;color:var(--ink);border:1px solid var(--line);background:#fff;border-radius:999px;padding:3px 10px;white-space:nowrap}
+nav.bar .status{margin-left:auto;font-size:12px;color:var(--ok);white-space:nowrap}
+section.sheet{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px 18px 20px;margin-top:18px;scroll-margin-top:64px}
+.sheet h2{font-size:19px;color:var(--ink);border-bottom:3px solid var(--ink);padding-bottom:6px}
+.lead{margin:10px 0 0;font-size:14px}
+.tag{display:inline-block;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px;padding:1px 9px;border-radius:999px;margin-right:6px}
+.group{margin-top:16px}
+.group h3{font-size:15px;color:#fff;background:var(--ink);border-radius:6px;padding:5px 10px}
+.group h3 small{font-weight:400;font-size:12px;opacity:.85;margin-left:6px}
+.f{display:grid;grid-template-columns:190px 1fr;gap:4px 12px;align-items:start;margin-top:10px}
+.f label{font-weight:700;font-size:14px;padding-top:7px}
+.f label small{display:block;font-weight:400;color:var(--muted);font-size:12px;line-height:1.45}
+textarea,input[type=text],input[type=date],select{width:100%;font:inherit;font-size:16px;color:var(--fg);background:#fff;border:1px solid var(--line);border-radius:6px;padding:7px 9px}
+textarea{resize:vertical;min-height:44px;line-height:1.55;overflow:hidden}
+textarea:focus,input:focus,select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+.row3{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.post{border:1px solid var(--line);border-radius:8px;padding:10px 12px 12px;margin-top:12px}
+.post h3{font-size:15px;color:var(--ink)}
+.radio{display:flex;gap:16px;margin-top:8px;font-size:15px}
+.radio label{display:flex;gap:6px;align-items:center}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+button{font:inherit;font-size:14px;font-weight:700;border-radius:8px;padding:9px 14px;cursor:pointer;border:1px solid var(--ink);background:#fff;color:var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button.danger{border-color:#b33;color:#b33}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.msg{font-size:13px;color:var(--ok);margin-top:8px;min-height:1em}
+.msg.err{color:#b33}
+details.paste{margin-top:14px;border:1px dashed var(--accent);border-radius:8px;background:var(--accent-soft);padding:10px 12px}
+details.paste summary{cursor:pointer;font-weight:700;color:var(--accent)}
+details.paste p{font-size:13px;margin:6px 0}
+.note{margin-top:14px;background:#f7f5f8;border-left:4px solid var(--accent);padding:8px 12px;font-size:13px}
+.ex{color:var(--muted)}
+footer.page{margin-top:22px}
+footer.page h2{font-size:17px;color:var(--ink)}
+@media (max-width:600px){.f{grid-template-columns:1fr}.f label{padding-top:0}.row3{grid-template-columns:1fr}header.page h1{font-size:19px}}
+/* 印刷・PDF保存：ボタン類を隠し、記入内容だけを出す */
+@media print{
+  body{background:#fff;padding:0;font-size:11.5px}
+  nav.bar,.btns,details.paste,.back,.privacy,footer.page .btns,.noprint{display:none!important}
+  section.sheet{border:none;border-radius:0;padding:0;margin:0 0 8mm;break-inside:auto}
+  section.sheet + section.sheet{break-before:page}
+  textarea,input,select{border:1px solid #999;font-size:11.5px;padding:3px 6px}
+  .f{grid-template-columns:150px 1fr;margin-top:5px}
+  .group h3{background:none;color:var(--ink);border-bottom:1.5px solid var(--ink);border-radius:0;padding:2px 0}
+  ::placeholder{color:transparent}
+  footer.page{display:none}
+}
+@page{size:A4;margin:12mm 12mm}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="page">
+  <div class="eyebrow">宇都宮商工会議所主催　SNSマーケティング戦略＆実践講座<br>Google Geminiを使ったSNS運用計画ワークショップ　2026.10.27</div>
+  <h1>SNS運用計画ワークシート（記入版）</h1>
+  <p class="privacy">入力した内容は、<b>この端末のブラウザの中だけ</b>に自動保存されます。インターネット上には送信されません。共用のパソコンでは、最後に「入力をすべて消す」を押してください。</p>
+  <p class="back"><a href="index.html">← プロンプト集に戻る</a>　／　<a href="worksheet.html">印刷用（白紙）のシート</a></p>
+</header>
+</div>
+<nav class="bar" aria-label="シートの移動"><div class="in">
+  <a href="#s1">1 自社情報</a><a href="#s2">2 運用方針</a><a href="#s22">2-2 コンテンツ案</a><a href="#s3">3 投稿案</a><a href="#s4">4 改善・行動</a><a href="#save">保存</a>
+  <span class="status" id="status" aria-live="polite"></span>
+</div></nav>
+<main class="wrap" id="app"></main>
+<div class="wrap">
+<footer class="page" id="save">
+  <section class="sheet">
+    <h2>記入内容を保存する</h2>
+    <p class="lead">11/24のInstagram編でも使います。どれか1つの方法で手元に残してください。</p>
+    <div class="btns">
+      <button type="button" class="primary" data-act="txt">テキストファイルで保存</button>
+      <button type="button" data-act="csv">Excel（CSV）で保存</button>
+      <button type="button" data-act="print">印刷・PDFで保存</button>
+      <button type="button" data-act="copyall">全部をコピー</button>
+      <button type="button" class="danger" data-act="clear">入力をすべて消す</button>
+    </div>
+    <p class="msg" id="msg-save" aria-live="polite"></p>
+    <p class="note">PDFで保存するには、「印刷・PDFで保存」→ 送信先（プリンター）で「PDFに保存」を選びます。スマホの方は「テキストファイルで保存」か「全部をコピー」してメモアプリに貼るのが簡単です。</p>
+  </section>
+</footer>
+</div>
+
+<script>
+/* ===== 1. 設定：シートと項目の定義（紙のワークシートと同じ順番・項目名） ===== */
+const STORE_KEY = "utsunomiya-sns-ws-2026";           // ブラウザ内の保存場所の名前
+const PROMPT1 = "あなたは宇都宮市の小規模事業者を支援するチーフSNSマネージャーです。\n以下の【記入欄】の情報をもとに、「SNS運用方針」シートを埋めるための内容を作ってください。1日30分で続けられる運用を前提にします。\n\n【記入欄】（分かる範囲で書いてください。空欄があれば質問してください）\n・屋号・ブランド名：【ここに記入】\n・業種：【ここに記入】\n・主な商品・サービス：【ここに記入】\n・SNSで実現したいこと（来店／予約／採用／ネット販売など）：【ここに記入】\n・来てほしいお客様（年代・住まい・興味など）：【ここに記入】\n・自社の強み（他店との違い）：【ここに記入】\n・今使っているSNS、または使えそうなSNS：【ここに記入】\n・1日にSNSに使える時間：【ここに記入】分\n\n【進め方】\n1. 記入欄に空欄があれば、最大3つまで質問してください。回答がなければ合理的に仮定し、冒頭に「仮定一覧」として示してください。\n2. 質問が不要なら、すぐに作ってください。\n\n【出力形式】次の順番と項目名を変えずに、「項目／内容」の2列の表で出力してください。内容は各項目1〜3行に収めます。\n\n■ SNS運用方針\n1. 運用目的とKPI\n　目的／KPI／達成期間\n2. メインターゲット（来てほしいお客様1人を具体的に）\n　名前（仮名）／年代・性別／家族構成／職業／居住地／興味・関心\n3. 利用メディア\n　SNS名（主軸1つ＋補完1つ。X、Instagram、LINE公式アカウント、Facebook、TikTok、YouTube、Googleビジネスプロフィールから、理由付きで）\n　ベンチマークアカウント（参考にする同業アカウントの探し方。実在を確認できないアカウント名は書かない）\n4. キャラクター設定（投稿する「中の人」の人物像。架空でよい）\n　名前／性別／生年月日／家族構成／出身／趣味・嗜好／口調\n5. 投稿方針\n　投稿頻度（1日に使える時間で続けられる回数と時間帯）\n　投稿内容（投稿の柱3〜5本と、それぞれのテーマ例）\n　リプライへの反応／他アカウントへの反応／ハッシュタグの活用／フォロー方針\n　目標達成に向けたKPI（到達＝インプレッション、交流＝エンゲージメント、フォロワーの3つで月間目標）\n　対象外アカウント（フォローや反応をしない相手）\n\n■ コンテンツ案\nNo.1〜6のタイトルを表で（投稿の柱からバランスよく）\n\n■ ハッシュタグ候補\n10個（#宇都宮 などの地域タグを2つ以上含める）\n\n【制約】\n・日本語で、専門用語には短い説明を添える\n・KPIは「まず3か月で達成できる」控えめな数字にする\n・ツールの料金や仕様は「要公式確認」と注記する\n・お客様の個人情報、実在の個人の情報は扱わない";                       // プロンプト①の本文（公開時にプロンプト集から差し込む）
+
+const S1 = [
+  ["brand","屋号・ブランド名","SNSで名乗る名前",1],
+  ["industry","業種","例：餃子専門店、いちご農園直売所、美容室",1],
+  ["products","主な商品・サービス","例：焼き餃子・冷凍餃子の通販、とちあいかのパフェ",2],
+  ["goal","SNSで実現したいこと","来店／予約／採用／ネット販売など。1つに絞る",2],
+  ["customer","来てほしいお客様","年代・住まい・興味。例：市内在住の30〜40代の家族連れ",2],
+  ["strength","自社の強み","他店との違い。例：創業40年の手包み、駅から徒歩3分",2],
+  ["sns","今使っているSNS・使えそうなSNS","X／Instagram／LINE公式／Facebook／TikTok／YouTube／Googleビジネスプロフィール",1],
+  ["time","1日にSNSに使える時間","例：15分、30分",1],
+];
+// プロンプト①の【記入欄】の行頭と、シート1の項目の対応
+const S1_TO_PROMPT = {
+  brand:"・屋号・ブランド名：", industry:"・業種：", products:"・主な商品・サービス：",
+  goal:"・SNSで実現したいこと（来店／予約／採用／ネット販売など）：", customer:"・来てほしいお客様（年代・住まい・興味など）：",
+  strength:"・自社の強み（他店との違い）：", sns:"・今使っているSNS、または使えそうなSNS：", time:"・1日にSNSに使える時間："
+};
+const S2 = [
+  ["運用目的とKPI","",[["purpose","目的","例：平日ランチの来店を半年で2割増やす"],["kpi","KPI",""],["period","達成期間",""]]],
+  ["メインターゲット","来てほしいお客様1人",[["t_name","名前（仮名）",""],["t_age","年代・性別",""],["t_family","家族構成",""],["t_job","職業",""],["t_area","居住地",""],["t_interest","興味・関心",""]]],
+  ["利用メディア","",[["media","SNS名（主軸＋補完）",""],["bench","ベンチマークアカウント",""]]],
+  ["キャラクター設定","投稿する中の人。架空でよい",[["c_name","名前",""],["c_sex","性別",""],["c_birth","生年月日",""],["c_family","家族構成",""],["c_from","出身",""],["c_hobby","趣味・嗜好",""],["c_tone","口調",""]]],
+  ["投稿方針","",[["freq","投稿頻度",""],["content","投稿内容",""],["reply","リプライへの反応",""],["other","他アカウントへの反応",""],["hashtag","ハッシュタグの活用",""],["follow","フォロー方針",""],["kpi2","目標達成に向けたKPI","Imp／Eng／Follower"],["exclude","対象外アカウント","例：金融系・情報商材"]]],
+];
+
+/* ===== 2. 保存と読み込み（失敗しても画面は使えるように try/catch） ===== */
+let data = {};
+function load(){ try{ data = JSON.parse(localStorage.getItem(STORE_KEY) || "{}") || {}; }catch(e){ data = {}; } }
+let saveTimer = null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => {
+    const st = document.getElementById("status");
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); st.textContent = "自動保存しました"; st.style.color = ""; }
+    catch(e){ st.textContent = "自動保存できません（最後に「保存」してください）"; st.style.color = "#b33"; }
+  }, 300);
+}
+
+/* ===== 3. 画面の組み立て ===== */
+const app = document.getElementById("app");
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function field(id, label, hint, rows){
+  return `<div class="f"><label for="${id}">${esc(label)}${hint ? `<small>${esc(hint)}</small>` : ""}</label>`+
+         `<textarea id="${id}" data-k="${id}" rows="${rows||1}"></textarea></div>`;
+}
+let html = "";
+// シート1
+html += `<section class="sheet" id="s1"><h2>シート1　自社情報の記入シート</h2>
+<p class="lead"><span class="tag">演習1で使用</span>書けない項目は空欄で構いません（AIが質問します）。書き終えたら下のボタンで、記入済みのプロンプト①をコピーできます。</p>`;
+S1.forEach(([k,l,h,r]) => html += field("s1_"+k, l, h, r));
+html += `<div class="btns"><button type="button" class="primary" data-act="prompt1">この内容でプロンプト①をコピー</button></div>
+<p class="msg" id="msg-s1" aria-live="polite"></p>
+<p class="note">「実現したいこと」と「強み」の2つがはっきりしていると、良い計画になります。コピーしたら、Geminiの入力欄に貼り付けて送信してください。</p></section>`;
+// シート2
+html += `<section class="sheet" id="s2"><h2>シート2　SNS運用方針</h2>
+<p class="lead"><span class="tag">演習1で使用</span>プロンプト①の回答（同じ項目順）から、自社に合う内容を入れます。AIの提案をそのまま使う必要はありません。</p>
+<details class="paste noprint"><summary>便利機能：Geminiの回答を貼り付けて自動で振り分ける</summary>
+<p>Geminiの回答全体をコピーして下の欄に貼り付け、「振り分ける」を押します。シート2・2-2の空欄に入ります。入らなかった欄は手で直してください。</p>
+<textarea id="paste-in" rows="4" placeholder="ここにGeminiの回答を貼り付け"></textarea>
+<label style="display:flex;gap:6px;align-items:center;font-size:13px;margin-top:6px"><input type="checkbox" id="paste-over"> 入力済みの欄も上書きする</label>
+<div class="btns" style="margin-top:8px"><button type="button" class="primary" data-act="parse">振り分ける</button></div>
+<p class="msg" id="msg-parse" aria-live="polite"></p></details>`;
+S2.forEach(([g, sub, items]) => {
+  html += `<div class="group"><h3>${esc(g)}${sub ? `<small>${esc(sub)}</small>` : ""}</h3>`;
+  items.forEach(([k,l,h]) => html += field("s2_"+k, l, h, 1));
+  html += `</div>`;
+});
+html += `<p class="note">11/24のInstagram編で使います。最後に「保存」で手元に残してください。</p></section>`;
+// シート2-2
+html += `<section class="sheet" id="s22"><h2>シート2-2　コンテンツ案・ハッシュタグ候補</h2>
+<p class="lead"><span class="tag">演習1で使用</span>プロンプト①の回答の後半「コンテンツ案」「ハッシュタグ候補」を入れます。</p>`;
+for(let i=1;i<=6;i++){
+  html += `<div class="f"><label for="s22_t${i}">コンテンツ案 ${i}</label><div class="row3">`+
+          `<textarea id="s22_t${i}" data-k="s22_t${i}" rows="1" placeholder="タイトル"></textarea>`+
+          `<textarea id="s22_p${i}" data-k="s22_p${i}" rows="1" placeholder="投稿の柱" aria-label="コンテンツ案${i}の投稿の柱"></textarea></div></div>`;
+}
+html += field("s22_tags","ハッシュタグ候補","10個。地域タグを2つ以上",3);
+html += `<p class="note">宣伝だけに偏っていたら、お役立ち・日常の案を足してください。</p></section>`;
+// シート3
+html += `<section class="sheet" id="s3"><h2>シート3　投稿アイデアシート（X／Instagram）</h2>
+<p class="lead"><span class="tag">演習2で使用</span>プロンプト②の案から、自社の雰囲気に合うものを2〜3本選んで入れます。</p>
+<div class="radio" role="radiogroup" aria-label="使ったSNS">使ったSNS：
+<label><input type="radio" name="s3_sns" value="X" data-k="s3_sns"> X</label>
+<label><input type="radio" name="s3_sns" value="Instagram" data-k="s3_sns"> Instagram</label></div>`;
+for(let i=1;i<=3;i++){
+  html += `<div class="post"><h3>投稿案 ${i}</h3>`+
+    field(`s3_body${i}`,"本文","必要なら手直し。Instagramは1枚目の写真の撮影案も",3)+
+    field(`s3_tag${i}`,"ハッシュタグ","",1)+
+    `<div class="f"><label for="s3_when${i}">投稿予定日時</label><input type="text" id="s3_when${i}" data-k="s3_when${i}" placeholder="例：11/1（土）11:30"></div>`+
+    `<div class="f"><label for="s3_eval${i}">評価</label><select id="s3_eval${i}" data-k="s3_eval${i}"><option value="">選択</option><option>◎</option><option>○</option><option>△</option></select></div></div>`;
+}
+html += `<p class="note">選ぶ基準：①自分の言葉で言えるか　②お客様にとってのメリットが冒頭にあるか　③呼びかけ（CTA）が1つあるか</p></section>`;
+// シート4
+html += `<section class="sheet" id="s4"><h2>シート4　投稿改善比較シート／明日からの3アクション</h2>
+<p class="lead"><span class="tag">演習3で使用</span>プロンプト③の回答から、改善前と改善後を入れ、変えた点を自分の言葉でメモします。</p>`+
+  field("s4_before","改善前","",3)+field("s4_after","改善後","",3)+
+  field("s4_why","変えた点","なぜ良くなるか",2)+field("s4_memo","投稿後の反応メモ","いいね・保存・返信",2)+
+  `<div class="group"><h3>明日からの3アクション<small>1週間以内にやること</small></h3>`;
+for(let i=1;i<=3;i++){
+  html += `<div class="f"><label for="s4_act${i}">アクション ${i}</label><div class="row3">`+
+          `<textarea id="s4_act${i}" data-k="s4_act${i}" rows="1"></textarea>`+
+          `<input type="date" id="s4_due${i}" data-k="s4_due${i}" aria-label="アクション${i}の期限"></div></div>`;
+}
+html += `</div><p class="note">例：①プロンプト①の記入欄を埋めて保存する　②選んだ投稿3本を予約投稿する　③1か月後にプロンプト④で振り返る</p></section>`;
+app.innerHTML = html;
+
+/* ===== 4. 入力欄と保存データをつなぐ ===== */
+function autoGrow(t){ t.style.height = "auto"; t.style.height = (t.scrollHeight + 2) + "px"; }
+function fillFromData(){
+  document.querySelectorAll("[data-k]").forEach(el => {
+    const v = data[el.dataset.k];
+    if(el.type === "radio"){ el.checked = (v === el.value); }
+    else { el.value = v || ""; }
+    if(el.tagName === "TEXTAREA") autoGrow(el);
+  });
+}
+document.addEventListener("input", e => {
+  const el = e.target;
+  if(!el.dataset || !el.dataset.k) return;
+  data[el.dataset.k] = el.value;
+  if(el.tagName === "TEXTAREA") autoGrow(el);
+  save();
+});
+document.addEventListener("change", e => {          // ラジオボタン・セレクト・日付
+  const el = e.target;
+  if(!el.dataset || !el.dataset.k) return;
+  data[el.dataset.k] = el.value; save();
+});
+window.addEventListener("resize", () => document.querySelectorAll("textarea").forEach(autoGrow));
+window.addEventListener("beforeprint", () => document.querySelectorAll("textarea").forEach(autoGrow));
+
+/* ===== 5. コピー（クリップボードが使えない環境では選択状態にして手動コピーを促す） ===== */
+async function copyText(text, msgId){
+  const m = document.getElementById(msgId);
+  try{
+    await navigator.clipboard.writeText(text);
+    m.className = "msg"; m.textContent = "コピーしました。貼り付け先で貼り付けてください。";
+  }catch(e){
+    const t = document.createElement("textarea");
+    t.value = text; t.setAttribute("readonly",""); t.style.position = "fixed"; t.style.top = "-1000px";
+    document.body.appendChild(t); t.select();
+    let ok = false;
+    try{ ok = document.execCommand("copy"); }catch(_){}
+    document.body.removeChild(t);
+    m.className = ok ? "msg" : "msg err";
+    m.textContent = ok ? "コピーしました。貼り付け先で貼り付けてください。" : "自動でコピーできませんでした。テキストファイルで保存してください。";
+  }
+}
+
+/* ===== 6. プロンプト①に記入内容を差し込む ===== */
+function buildPrompt1(){
+  if(!PROMPT1) return "";
+  return PROMPT1.split("\n").map(line => {
+    for(const [k, head] of Object.entries(S1_TO_PROMPT)){
+      if(line.startsWith(head)){
+        let v = (data["s1_"+k] || "").trim().replace(/\s*\n\s*/g, "、");
+        if(!v) return line;                                   // 空欄は【ここに記入】のまま（AIが質問する）
+        if(k === "time"){ v = v.replace(/分$/, ""); return head + v + (/^[0-9０-９]+$/.test(v) ? "分" : ""); }
+        return head + v;
+      }
+    }
+    return line;
+  }).join("\n");
+}
+
+/* ===== 7. Geminiの回答の貼り付け → 項目に振り分け ===== */
+const norm = s => String(s).replace(/\*\*|__|`/g, "").replace(/<br\s*\/?>/gi, "").replace(/[\s　]/g, "")
+  .replace(/^[0-9０-９]+[.．、)]/, "").replace(/[：:]$/, "");
+function parseRows(text){
+  // マークダウンの表（| A | B |）、タブ区切り、「項目：内容」の3形式に対応
+  const rows = [];
+  text.split(/\r?\n/).forEach(raw => {
+    const line = raw.trim();
+    if(!line || /^\|?\s*:?-{2,}/.test(line)) return;          // 区切り行は飛ばす
+    let cells = null;
+    if(line.includes("|")) cells = line.replace(/^\||\|$/g, "").split("|").map(c => c.trim());
+    else if(line.includes("\t")) cells = line.split("\t").map(c => c.trim());
+    else { const m = line.match(/^[・\-*●]?\s*([^：:]{1,24})[：:]\s*(.+)$/); if(m) cells = [m[1], m[2]]; }
+    if(cells){ cells = cells.filter(c => c !== ""); if(cells.length >= 2) rows.push(cells); }
+  });
+  return rows;
+}
+function cleanVal(v){ return String(v).replace(/<br\s*\/?>/gi, "\n").replace(/\*\*/g, "").trim(); }
+function parseGemini(text, overwrite){
+  const fields = [];                                         // シート2の項目を回答と同じ順番で並べる
+  S2.forEach(([g,,items]) => items.forEach(([k,l]) => fields.push({id:"s2_"+k, key:norm(l.replace(/（.*?）/g,"")), full:norm(l)})));
+  let ptr = 0, filled = 0;
+  const put = (id, v) => {
+    if(!v) return;
+    if(!overwrite && (data[id] || "").trim()) return;
+    data[id] = v; filled++;
+  };
+  const rows = parseRows(text);
+  const contents = [];
+  rows.forEach(cells => {
+    // コンテンツ案の行：先頭が番号（1、No.1 など）
+    const first = norm(cells[0]).replace(/^No\.?/i, "");
+    if(/^[0-9０-９]$/.test(first) && cells.length >= 2){ contents.push(cells.slice(1)); return; }
+    // シート2の項目：左の列から順に項目名を探し、値は一番右の列
+    for(let ci = 0; ci < cells.length - 1; ci++){
+      const key = norm(cells[ci]).replace(/（.*?）|\(.*?\)/g, "");
+      if(key.length < 2) continue;
+      const match = (f) => f.key === key || f.full === norm(cells[ci]) || (key.length >= 3 && (f.key.startsWith(key) || key.startsWith(f.key)));
+      let idx = -1;
+      for(let i = ptr; i < fields.length; i++){ if(match(fields[i])){ idx = i; break; } }
+      if(idx < 0) continue;
+      put(fields[idx].id, cleanVal(cells[cells.length - 1]));
+      ptr = idx + 1;
+      return;
+    }
+  });
+  contents.slice(0, 6).forEach((c, i) => { put(`s22_t${i+1}`, cleanVal(c[0])); if(c[1]) put(`s22_p${i+1}`, cleanVal(c[c.length-1])); });
+  // ハッシュタグ候補：「ハッシュタグ候補」の見出しより後にある #○○ を集める
+  const pos = text.search(/ハッシュタグ候補/);
+  if(pos >= 0){
+    const tags = [...new Set((text.slice(pos).match(/[#＃][^\s#＃|、,，。・*`]+/g) || []))];
+    if(tags.length) put("s22_tags", tags.join(" "));
+  }
+  return filled;
+}
+
+/* ===== 8. 保存用のテキスト・CSVを作る ===== */
+function collect(){
+  // [シート, 区分, 項目, 内容] の行を作る
+  const out = [];
+  const v = k => (data[k] || "").trim();
+  S1.forEach(([k,l]) => out.push(["シート1 自社情報","",l,v("s1_"+k)]));
+  S2.forEach(([g,,items]) => items.forEach(([k,l]) => out.push(["シート2 SNS運用方針",g,l,v("s2_"+k)])));
+  for(let i=1;i<=6;i++) out.push(["シート2-2 コンテンツ案","",`コンテンツ案${i}`, [v(`s22_t${i}`), v(`s22_p${i}`)].filter(Boolean).join("／")]);
+  out.push(["シート2-2 コンテンツ案","","ハッシュタグ候補",v("s22_tags")]);
+  out.push(["シート3 投稿案","","使ったSNS",v("s3_sns")]);
+  for(let i=1;i<=3;i++){
+    out.push(["シート3 投稿案",`投稿案${i}`,"本文",v(`s3_body${i}`)]);
+    out.push(["シート3 投稿案",`投稿案${i}`,"ハッシュタグ",v(`s3_tag${i}`)]);
+    out.push(["シート3 投稿案",`投稿案${i}`,"投稿予定日時",v(`s3_when${i}`)]);
+    out.push(["シート3 投稿案",`投稿案${i}`,"評価",v(`s3_eval${i}`)]);
+  }
+  [["s4_before","改善前"],["s4_after","改善後"],["s4_why","変えた点"],["s4_memo","投稿後の反応メモ"]].forEach(([k,l]) => out.push(["シート4 改善・行動","",l,v(k)]));
+  for(let i=1;i<=3;i++) out.push(["シート4 改善・行動","明日からの3アクション",`アクション${i}`, [v(`s4_act${i}`), v(`s4_due${i}`) ? `（期限 ${v(`s4_due${i}`)}）` : ""].join("")]);
+  return out;
+}
+function toText(){
+  let s = "SNS運用計画ワークシート（宇都宮商工会議所主催 2026.10.27）\n", cur = "", grp = "";
+  collect().forEach(([sh,g,l,val]) => {
+    if(sh !== cur){ s += `\n■ ${sh}\n`; cur = sh; grp = ""; }
+    if(g && g !== grp){ s += `【${g}】\n`; grp = g; }
+    s += `${l}：${val}\n`;
+  });
+  return s;
+}
+function toCSV(){
+  const q = x => `"${String(x).replace(/"/g,'""')}"`;
+  return "﻿" + [["シート","区分","項目","内容"], ...collect()].map(r => r.map(q).join(",")).join("\r\n");  // BOM付きでExcelの文字化けを防ぐ
+}
+function download(name, text, type){
+  try{
+    const blob = new Blob([text], {type});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+    msg("msg-save", `「${name}」を保存しました（ダウンロードフォルダ）。`);
+  }catch(e){ msg("msg-save", "保存できませんでした。「全部をコピー」をお試しください。", true); }
+}
+function msg(id, t, err){ const m = document.getElementById(id); m.className = err ? "msg err" : "msg"; m.textContent = t; }
+const stamp = () => { const d = new Date(); return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,"0")}${String(d.getDate()).padStart(2,"0")}`; };
+function fileBase(){ const b = (data.s1_brand || "").trim().replace(/[\\/:*?"<>|\s]/g, "").slice(0, 20); return `SNS運用計画_${b ? b + "_" : ""}${stamp()}`; }
+
+/* ===== 9. ボタンの動作 ===== */
+document.addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]");
+  if(!b) return;
+  const act = b.dataset.act;
+  if(act === "prompt1"){
+    const p = buildPrompt1();
+    if(!p){ msg("msg-s1", "プロンプトを読み込めませんでした。プロンプト集のページからコピーしてください。", true); return; }
+    copyText(p, "msg-s1");
+  }else if(act === "parse"){
+    const t = document.getElementById("paste-in").value;
+    if(!t.trim()){ msg("msg-parse", "先にGeminiの回答を貼り付けてください。", true); return; }
+    const n = parseGemini(t, document.getElementById("paste-over").checked);
+    fillFromData(); save();
+    msg("msg-parse", n ? `${n}か所に入力しました。内容を確認し、必要なら手で直してください。` : "振り分けられる項目が見つかりませんでした。手で入力してください。", !n);
+  }else if(act === "txt"){ download(fileBase() + ".txt", toText(), "text/plain;charset=utf-8"); }
+  else if(act === "csv"){ download(fileBase() + ".csv", toCSV(), "text/csv;charset=utf-8"); }
+  else if(act === "print"){ document.querySelectorAll("textarea").forEach(autoGrow); window.print(); }
+  else if(act === "copyall"){ copyText(toText(), "msg-save"); }
+  else if(act === "clear"){
+    if(!confirm("入力した内容をすべて消します。よろしいですか？（元に戻せません）")) return;
+    data = {}; try{ localStorage.removeItem(STORE_KEY); }catch(_){}
+    fillFromData(); msg("msg-save", "入力をすべて消しました。");
+  }
+});
+
+load();
+fillFromData();
+</script>
+</body>
+</html>
